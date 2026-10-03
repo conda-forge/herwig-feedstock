@@ -12,6 +12,7 @@ source:
       - determine-length-of-compiled-in-install-paths-at-run.patch
       - link-against-an-external-looptools-library.patch
       - replace-std-random_shuffle-which-is-removed-in-C-17.patch
+      - fix-herwig-config-exit-status-and-use-grep-E.patch
   # 'make install' runs 'Herwig init' to create the default repository
   # HerwigDefaults.rpo, which fails if the default PDF sets are not installed.
   # The PDF sets are only used during the build and are not packaged.
@@ -23,7 +24,7 @@ source:
     target_directory: pdfsets/CT14nlo
 
 build:
-  number: 3
+  number: 4
   skip:
     - win
   script:
@@ -100,13 +101,24 @@ tests:
         - share/Herwig/LHC.in
   - script:
       - Herwig --version
+      # Guard against warnings from the use of the obsolescent egrep
+      - test -z "$(herwig-config --help 2>&1 > /dev/null)"
+      - herwig-config --help
+      - herwig-config --prefix
+      - herwig-config --datadir
+      - herwig-config --libdir
+      - herwig-config --includedir
+      - herwig-config --cppflags
+      - herwig-config --ldflags
+      - herwig-config --ldlibs
+
       # The default PDF sets are not shipped with the package
       - lhapdf install CT14lo CT14nlo &> /dev/null
-      - Herwig read ${PREFIX}/share/Herwig/LHC-Matchbox.in
+      - Herwig read "$(herwig-config --datadir)/LHC-Matchbox.in"
       - Herwig run LHC-Matchbox.run -N 100
       # The loop induced Higgs decays of the MSSM use LoopTools
-      - cp ${PREFIX}/share/Herwig/CMSSM40.1.1.slha .
-      - Herwig read ${PREFIX}/share/Herwig/LHC-MSSM.in
+      - cp "$(herwig-config --datadir)/CMSSM40.1.1.slha" .
+      - Herwig read "$(herwig-config --datadir)/LHC-MSSM.in"
 
 about:
   homepage: https://herwig.hepforge.org/
