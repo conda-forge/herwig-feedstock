@@ -1,5 +1,5 @@
 context:
-  version: "7.2.0"
+  version: "7.3.0"
 
 package:
   name: herwig
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://herwig.hepforge.org/downloads/Herwig-${{ version }}.tar.bz2
-    sha256: 5933545ddff7fde2bea86fa61943fba5d4be50ba993c336e9a372529a2f2b164
+    sha256: 2624819d2dff105ba952ea1b5cf12eb6f4926d4951774a41907699e2f567686c
     patches:
       - determine-length-of-compiled-in-install-paths-at-run.patch
       - link-against-an-external-looptools-library.patch
@@ -23,7 +23,7 @@ source:
     target_directory: pdfsets/CT14nlo
 
 build:
-  number: 3
+  number: 0
   skip:
     - win
   script:
@@ -67,8 +67,8 @@ requirements:
     - gsl
     - libboost-headers
     - looptools
-    # Herwig 7.2 is the release series for ThePEG 2.2
-    - thepeg 2.2.*
+    # Herwig 7.3 is the release series for ThePEG 2.3
+    - thepeg 2.3.*
   run:
     - python
   run_exports:
