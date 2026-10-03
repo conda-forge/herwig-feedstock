@@ -1,0 +1,67 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Matthew Feickert <matthew.feickert@cern.ch>
+Date: Sat, 3 Oct 2026 01:22:35 -0600
+Subject: [PATCH] Replace std::random_shuffle which is removed in C++17
+
+std::random_shuffle is deprecated in C++14 and removed in C++17. libc++
+does not provide it when compiling as C++17 or later, so the build fails
+on macOS with
+
+    error: use of undeclared identifier 'random_shuffle'
+
+Replace the three uses with the explicit loop of swaps that the libstdc++
+implementation of std::random_shuffle performs, drawing the indices from
+UseRandom::irnd as before. The random number sequence, and so the results
+of builds that use libstdc++, is unchanged.
+---
+ Hadronization/ColourReconnector.cc | 12 ++++++++----
+ PDF/HwRemDecayer.cc                |  6 ++++--
+ 2 files changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/Hadronization/ColourReconnector.cc b/Hadronization/ColourReconnector.cc
+index 9dc1206..ca5b8b6 100644
+--- a/Hadronization/ColourReconnector.cc
++++ b/Hadronization/ColourReconnector.cc
+@@ -168,8 +168,10 @@ void ColourReconnector::_doRecoPlain(ClusterVector & cv) const {
+   ClusterVector newcv = cv;
+ 
+   // try to avoid systematic errors by randomising the reconnection order
+-  long (*p_irnd)(long) = UseRandom::irnd;
+-  random_shuffle( newcv.begin(), newcv.end(), p_irnd ); 
++  // std::random_shuffle is removed in C++17 and not available in libc++.
++  // This is the same sequence of swaps as the libstdc++ implementation.
++  for ( size_t i = 1; i < newcv.size(); ++i )
++    std::swap(newcv[i], newcv[UseRandom::irnd(i + 1)]);
+ 
+   // iterate over all clusters
+   for (CluVecIt cit = newcv.begin(); cit != newcv.end(); cit++) {
+@@ -220,8 +222,10 @@ void ColourReconnector::_doRecoBaryonic(ClusterVector & cv) const {
+     ClusterVector deleted; deleted.reserve(cv.size());
+ 
+     // try to avoid systematic errors by randomising the reconnection order
+-    long (*p_irnd)(long) = UseRandom::irnd;
+-    random_shuffle( newcv.begin(), newcv.end(), p_irnd ); 
++    // std::random_shuffle is removed in C++17 and not available in libc++.
++    // This is the same sequence of swaps as the libstdc++ implementation.
++    for ( size_t i = 1; i < newcv.size(); ++i )
++      std::swap(newcv[i], newcv[UseRandom::irnd(i + 1)]);
+ 
+     // iterate over all clusters
+     for (CluVecIt cit = newcv.begin(); cit != newcv.end(); ++cit) {
+diff --git a/PDF/HwRemDecayer.cc b/PDF/HwRemDecayer.cc
+index acf3647..266d623 100644
+--- a/PDF/HwRemDecayer.cc
++++ b/PDF/HwRemDecayer.cc
+@@ -1556,8 +1556,10 @@ bool HwRemDecayer::doPhaseSpaceGenerationGluons(vector<Lorentz5Momentum> &softGl
+ 
+     // randomize the mom vector to get the first and the compensating parton 
+     // at all possible positions:
+-    long (*p_irnd)(long) = UseRandom::irnd;
+-    random_shuffle(mom.begin(),mom.end(),p_irnd);
++    // std::random_shuffle is removed in C++17 and not available in libc++.
++    // This is the same sequence of swaps as the libstdc++ implementation.
++    for ( size_t i = 1; i < mom.size(); ++i )
++      std::swap(mom[i], mom[UseRandom::irnd(i + 1)]);
+ 
+ 
+     for(unsigned int i = 0; i<ncl; i++) xi[i] = randUng(0.6,1.0);
