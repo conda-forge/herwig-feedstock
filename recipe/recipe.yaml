@@ -67,8 +67,8 @@ requirements:
     - gsl
     - libboost-headers
     - looptools
-    # Herwig 7.2 is the release series for ThePEG 2.2
-    - thepeg 2.2.*
+    # Herwig 7.3 is the release series for ThePEG 2.3
+    - thepeg 2.3.*
   run:
     - python
   run_exports:

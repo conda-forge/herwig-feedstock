@@ -18,11 +18,11 @@ LoopTools 2.13 and LoopTools 2.16.
 As Makefile.am is changed, the build system needs to be regenerated with
 autoreconf.
 ---
- Looptools/Makefile.am | 68 +++++--------------------------------------
+ Looptools/Makefile.am |   68 +++++--------------------------------------------
  1 file changed, 7 insertions(+), 61 deletions(-)
 
 diff --git a/Looptools/Makefile.am b/Looptools/Makefile.am
-index ab827a7..f80b5da 100644
+index 9c7dc96..f80b5da 100644
 --- a/Looptools/Makefile.am
 +++ b/Looptools/Makefile.am
 @@ -1,67 +1,13 @@
@@ -79,13 +79,13 @@ index ab827a7..f80b5da 100644
 -
 -libHwLooptoolsXFC_la_SOURCES = $(theXFCSOURCES)
 -libHwLooptoolsXFC_la_CPPFLAGS = $(commonCPPFLAGS)
--libHwLooptoolsXFC_la_FCFLAGS = $(AM_FCFLAGS) -ffixed-line-length-none
--libHwLooptoolsXFC_la_FFLAGS  = $(AM_FFLAGS)  -ffixed-line-length-none
+-libHwLooptoolsXFC_la_FCFLAGS = $(AM_FCFLAGS)
+-libHwLooptoolsXFC_la_FFLAGS  = $(AM_FFLAGS)
 -
 -libHwLooptoolsCFC_la_SOURCES = $(theCFCSOURCES)
 -libHwLooptoolsCFC_la_CPPFLAGS = $(commonCPPFLAGS) -DCOMPLEXPARA
--libHwLooptoolsCFC_la_FCFLAGS = $(AM_FCFLAGS) -ffixed-line-length-none
--libHwLooptoolsCFC_la_FFLAGS  = $(AM_FFLAGS)  -ffixed-line-length-none
+-libHwLooptoolsCFC_la_FCFLAGS = $(AM_FCFLAGS)
+-libHwLooptoolsCFC_la_FFLAGS  = $(AM_FFLAGS)
 -
 -libHwLooptools_la_SOURCES = util/cache.c clooptools.cc
 +## Only the C++ interface is built. The LoopTools library itself is linked
