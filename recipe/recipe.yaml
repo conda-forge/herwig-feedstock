@@ -24,7 +24,7 @@ source:
     target_directory: pdfsets/CT14nlo
 
 build:
-  number: 4
+  number: 5
   skip:
     - win
   script:
