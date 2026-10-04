@@ -21,9 +21,9 @@ fortran_compiler:
 fortran_compiler_version:
 - '15'
 gsl:
-- '2.8'
+- '2.7'
 libboost_headers:
-- '1.90'
+- '1.88'
 looptools:
 - '2.16'
 macos_machine:
