@@ -10,3 +10,6 @@ provider:
   linux_aarch64: default
   osx_arm64: default
 test: native_and_emulated
+bot:
+  abi_migration_branches:
+    - v7.2.x
