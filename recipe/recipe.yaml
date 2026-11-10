@@ -62,7 +62,7 @@ requirements:
     - ${{ compiler("cxx") }}
     - ${{ stdlib("c") }}
     - make
-    - pkg-config
+    - pkgconf
     - gnuconfig
     - autoconf
     - automake
