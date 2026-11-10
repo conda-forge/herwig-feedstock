@@ -24,7 +24,7 @@ source:
     target_directory: pdfsets/CT14nlo
 
 build:
-  number: 1
+  number: 2
   skip:
     - win
   script:
@@ -62,7 +62,7 @@ requirements:
     - ${{ compiler("cxx") }}
     - ${{ stdlib("c") }}
     - make
-    - pkg-config
+    - pkgconf
     - gnuconfig
     - autoconf
     - automake
